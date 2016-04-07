@@ -12,13 +12,14 @@ import sys
 import unittest
 
 from pydca.wrappers import HMMERWrapper
+from pydca.wrappers.HMMERWrapper import ParseError
 
 class WrapperTest(unittest.TestCase):
 
     def setUp(self):
         """Common across all tests"""
 
-        self.hw = HMMERWrapper.HMMERWrapper
+        self.hw = HMMERWrapper
 
         modpath = os.path.abspath(os.path.dirname(__file__))
         self.seqfile = os.path.join(modpath, 'data', 'P00929.fasta')
@@ -45,7 +46,7 @@ class WrapperTest(unittest.TestCase):
     def test_readbadformat(self):
         """Reading a bad FASTA file (and failing)"""
 
-        self.assertRaises(HMMERWrapper.ParseError, self.hw, self.badfile)
+        self.assertRaises(ParseError, self.hw, self.badfile)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
