@@ -3,8 +3,15 @@
 # license.  Please see the LICENSE file that should have been included
 # as part of this package.
 
-class _BaseAlignment(object):
-    """Base class to represent a multiple sequence alignment
+"""
+General purpose parser for Stockholm formatted files.
+
+Goes the extra mile to parse metadata from the 'DE' line dumped by HMMER.
+"""
+
+class StockholmIO(object):
+    """
+    Stockholm parser/writer
     """
 
     pass
