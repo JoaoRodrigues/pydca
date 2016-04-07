@@ -11,7 +11,7 @@ import os
 import sys
 import unittest
 
-from pydca.io import HMMERWrapper
+from pydca.wrappers import HMMERWrapper
 
 class WrapperTest(unittest.TestCase):
 

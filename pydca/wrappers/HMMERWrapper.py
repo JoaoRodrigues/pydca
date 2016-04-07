@@ -67,7 +67,8 @@ class HMMERWrapper(object):
     or handle) and parses several output files to create a unified Stockholm file with the
     full aligned sequences and a set of features for each hit (e.g. uniprot accession, hit
     e-value, etc) and a set of per-file annotations (e.g. number of sequences, sequence
-    length, original HMMER parameters, etc).
+    length, original HMMER parameters, etc). This file is a suitable input to create an
+    Alignment object.
 
     Args:
         sequence: a sequence file, an open file handle, or a string with the sequence data (in FASTA format)
@@ -117,6 +118,8 @@ class HMMERWrapper(object):
         if not _which(executable):
             raise OSError("HMMER executable not found in PATH: '{}'".format(executable))
 
+
+        # run HMMER
 
     def __validate(self, seqdata):
         """Verifies the user provided input is either a file or a file-like object
@@ -168,4 +171,8 @@ class HMMERWrapper(object):
             self.sequences.append(Sequence(seq_name, seq_raw))
 
         return self.sequences
+
+    def run(self):
+        """Launches the HMMER executable on the user data"""
+        pass
 

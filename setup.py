@@ -32,5 +32,5 @@ setup(name='pydca',
       author='Jason Wang, Jessica Zhao, Joao Rodrigues',
       author_email='j.p.g.l.m.rodrigues@gmail.com',
       url='http://github.com/drorlab/pydca',
-      packages=['pydca', 'pydca.io'],
+      packages=['pydca', 'pydca.io', 'pydca.wrappers'],
      )
