@@ -28,9 +28,10 @@ except ImportError:
         """
 
         def is_exe(fpath):
+            """Returns True if the path is an executable"""
             return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
-        fpath, fname = os.path.split(executable)
+        fpath, _ = os.path.split(executable)
         if fpath:
             if is_exe(executable):
                 return executable
@@ -55,9 +56,11 @@ CANONICAL_AA1 = set('ACDEFGHIKLMNPQRSTVWY')
 
 # Classes
 class HMMERRuntimeError(Exception):
+    """Custom class to throw exceptions related to running HMMER"""
     pass
 
 class ParseError(Exception):
+    """Custom class to throw exceptions related to parsing input/output"""
     pass
 
 class HMMERWrapper(object):
@@ -71,13 +74,13 @@ class HMMERWrapper(object):
     Alignment object.
 
     Args:
-        sequence: a sequence file, an open file handle, or a string with the sequence data (in FASTA format)
+        sequence: sequence file, open file handle, or string with the data in FASTA format
         database: a string with the path to the sequence database against which to run HMMER
 
         executable: a string with the HMMER executable to call (optional) [def: jackhmmer]
-        evalue: a number in scientific notation with the expectation value threshold (optional) [def: 1E-20]
-        ncpus: an integer with the number of CPUs to use in the HMMER calculation (optional) [def: 2]
-        niter: an integer with the number of iterations to use in jackhmmer (optional) [def: 5]
+        evalue: a number in scientific notation with the expectation value threshold (optional)
+        ncpus: an integer with the number of CPUs to use in the HMMER calculation (optional)
+        niter: an integer with the number of iterations to use in jackhmmer (optional)
 
         cleanup: a boolean to remove all files produced by HMMER
         mock: a boolean to block the actual call to HMMER (use for testing only)
@@ -97,14 +100,16 @@ class HMMERWrapper(object):
         # Empty container for parsed/validated sequences
         self.sequences = []
 
+        self.database = database
+
         # Setup logging with module name
         self.logger = logging.getLogger(__name__)
 
         # Iterate over kwargs and define defaults if not user-provided
-        _defaults = { 'evalue': 1E-20,
-                      'ncpus': 2,
-                      'niter': 5,
-                      'mock': False }
+        _defaults = {'evalue': 1E-20,
+                     'ncpus': 2,
+                     'niter': 5,
+                     'mock': False}
 
         for kwarg in _defaults:
             kwarg_val = kwargs.get(kwarg)
@@ -136,7 +141,7 @@ class HMMERWrapper(object):
             ParseError: if the sequence contains others than the 20 canonical AAs.
         """
 
-        Sequence = namedtuple('Seq', ['name', 'data'])
+        _Sequence = namedtuple('Seq', ['name', 'data'])
 
         # file-like object
         # isinstance(obj, file) does not hold in Py3
@@ -165,10 +170,10 @@ class HMMERWrapper(object):
             seq_name = seq_record.name
             seq_raw = str(seq_record.seq)
             if not _verify_alphabet(seq_record.seq):
-                msg = 'Entry #{} ({}) in {} is not a valid protein sequence'.format(seq_i, seq_name, fname)
-                raise ParseError(msg)
+                msg = 'Entry #{} ({}) in {} is not a valid protein sequence'
+                raise ParseError(msg.format(seq_i, seq_name, fname))
 
-            self.sequences.append(Sequence(seq_name, seq_raw))
+            self.sequences.append(_Sequence(seq_name, seq_raw))
 
         return self.sequences
 
