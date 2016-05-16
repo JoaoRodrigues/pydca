@@ -29,8 +29,8 @@ if sys.version_info[:2] < (2, 7):
 setup(name='pydca',
       version='0.0.1',
       description='Coevolution analysis for protein sequences',
-      author='Jason Wang, Jessica Zhao, Joao Rodrigues',
+      author='Joao Rodrigues, Jason Wang, Jessica Zhao',
       author_email='j.p.g.l.m.rodrigues@gmail.com',
       url='http://github.com/drorlab/pydca',
-      packages=['pydca', 'pydca.io', 'pydca.wrappers'],
+      packages=['pydca', 'pydca.core', 'pydca.io', 'pydca.wrappers'],
      )
