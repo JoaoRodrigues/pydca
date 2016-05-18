@@ -76,6 +76,12 @@ class Alignment(object):
             seq_as_str = self.sequences[seq_index, ].tostring()
             return Sequence._make((seq_name, seq_as_str, self.seq_annotations[seq_name]))
 
+    def __iter__(self):
+        """Returns an iterator of the sequences in the alignment"""
+
+        for seq_name in self.names:
+            yield self[seq_name]
+
     def __len__(self):
         """
         Returns the number of sequences in the Alignment.
@@ -122,7 +128,8 @@ class Alignment(object):
                     raise AlignmentError(emsg.format(seq_name, _overlapping_keys))
 
                 self.seq_annotations[seq_name].update(annotations[seq_name])
-                self.logger.debug('Annotated seq. {0} with keys {1}'.format(seq_name, _new_keys))
+                msg = 'Annotated seq. {0} with keys {1}'
+                self.logger.debug(msg.format(seq_name, ','.join(_new_keys)))
             else:
                 raise AlignmentError('Sequence not found in the alignment: {0}'.format(seq_name))
 
@@ -198,7 +205,7 @@ class Alignment(object):
         sequence_coverage = 1 - (gappy_columns.sum() / self.sequences.shape[0])
 
         if annotate:
-            self.aln_annotations['coverage'] = ''.join(['-' if p else 'x' for p in gappy_columns])
+            self.aln_annotations['coverage'] = ''.join(['-' if p else 'o' for p in gappy_columns])
 
         return sequence_coverage
 
